@@ -28,6 +28,7 @@ npm run zip            # 打包成 avtc-1.0.0.zip（内容与 dist/ 一致）
 | `npm run check:privacy` | **发布隐私政策前**必须通过（见下文「发布」） |
 | `npm run assets:store` | 生成商店截图与宣传图块（需先 build；用 Puppeteer 驱动真实产物） |
 | `npm run icons` | 重新生成 `public/icons/*.png` |
+| `scripts/git-push.sh` | 一次完成身份、远程、自检与推送（见「发布到 GitHub」） |
 
 ### 加载到 Chrome（114+）
 
@@ -86,12 +87,35 @@ npm run check:privacy
 
 它会检查：占位符是否都已替换、页面是否点名 AVTC、中英两段是否齐全、关键披露项是否与 `store/privacy-policy.md` 一致、以及页面是否**零外部资源**（无 CDN、无远程字体、无埋点、无脚本）。CI 里也有一份同样的检查（非阻塞），提醒你别把带占位符的政策发出去。
 
-### 第 2 步：推到 GitHub
+### 第 2 步：一条命令推到 GitHub
+
+仓库里带了引导脚本，身份、远程地址、占位作者、自检、推送一次做完（**幂等，可重复执行**）：
 
 ```bash
-git remote add origin git@github.com:<你的账号>/avtc.git
-git push -u origin main
+scripts/git-push.sh \
+  --name  "你的名字" \
+  --email "you@example.com" \
+  --remote git@github.com:<你的账号>/avtc.git
 ```
+
+它会依次：写入 git 身份 → 把仍是占位身份的提交改成你的（`--amend --reset-author`）→ 设置 `origin` → 跑 `npm run verify` 自检 → `git push -u origin main`。
+
+| 参数 | 说明 |
+|---|---|
+| `--branch <名称>` | 目标分支，默认 `main` |
+| `--skip-verify` | 跳过自检（仅在已确认 verify 通过时用） |
+| `--no-push` | 只做准备与自检，不推送（用来先看一眼状态） |
+| `--help` | 用法说明 |
+
+> 之所以需要这个脚本：**工作区快照不会保留 `.git/config`**（git 身份与 remote 都存在那里），所以这两项在下一次会话里会丢失。脚本对缺失状态做了检测，缺什么就提示补什么。
+>
+> 想手动做也可以：
+> ```bash
+> git config user.name "你的名字" && git config user.email "you@example.com"
+> git commit --amend --reset-author --no-edit
+> git remote add origin git@github.com:<你的账号>/avtc.git
+> git push -u origin main
+> ```
 
 ### 第 3 步：开启 Pages
 
