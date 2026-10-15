@@ -98,7 +98,9 @@ scripts/git-push.sh \
   --remote git@github.com:<你的账号>/avtc.git
 ```
 
-它会依次：写入 git 身份 → 把仍是占位身份的提交改成你的（`--amend --reset-author`）→ 设置 `origin` → 跑 `npm run verify` 自检 → `git push -u origin main`。
+它会依次：写入 git 身份 → 把**历史中所有占位身份的提交**改写成你（`git rebase --root --exec`，只改 HEAD 会让早期提交仍带占位身份）→ 设置 `origin` → 跑 `npm run verify` 自检 → `git push -u origin main`。
+
+改写历史在两种情况下会被拒绝并给出提示：工作区不干净、历史中存在合并提交。
 
 | 参数 | 说明 |
 |---|---|
@@ -112,7 +114,7 @@ scripts/git-push.sh \
 > 想手动做也可以：
 > ```bash
 > git config user.name "你的名字" && git config user.email "you@example.com"
-> git commit --amend --reset-author --no-edit
+> git rebase --root --exec 'git commit --amend --no-edit --reset-author'
 > git remote add origin git@github.com:<你的账号>/avtc.git
 > git push -u origin main
 > ```
