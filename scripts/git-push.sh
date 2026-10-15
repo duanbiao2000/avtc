@@ -79,20 +79,36 @@ fi
 
 step "检查提交作者"
 if ! git rev-parse HEAD >/dev/null 2>&1; then
-  info "还没有任何提交，将在推送前保留现状（如需首次提交请自行 git add/commit）"
+  info "还没有任何提交，跳过作者检查"
 else
-  CURRENT_EMAIL="$(git log -1 --format='%ae')"
-  if [ "$CURRENT_EMAIL" = "you@example.com" ]; then
-    if [ -n "$NAME" ] && [ -n "$EMAIL" ]; then
-      git commit --amend --reset-author --no-edit -q
-      ok "占位作者已改为 $(git log -1 --format='%an <%ae>')"
-    else
-      printf '  \033[1;33m!\033[0m 提交作者仍是占位身份 AVTC <you@example.com>\n'
-      info "修掉它：加上 --name 与 --email 重跑本脚本，或手动执行"
-      info "  git commit --amend --reset-author --no-edit"
-    fi
-  else
+  PLACEHOLDER_EMAIL="you@example.com"
+  PLACEHOLDER_COUNT="$(git log --format='%ae' | grep -cx "$PLACEHOLDER_EMAIL" || true)"
+  if [ "$PLACEHOLDER_COUNT" = "0" ]; then
     ok "作者：$(git log -1 --format='%an <%ae>')"
+  else
+    printf '  \033[1;33m!\033[0m 历史中有 %s 个提交使用占位身份 AVTC <%s>\n' "$PLACEHOLDER_COUNT" "$PLACEHOLDER_EMAIL"
+    if [ -z "$NAME" ] || [ -z "$EMAIL" ]; then
+      info "未提供 --name / --email，先不动历史"
+      info "改写它们：重跑本脚本并加上 --name 与 --email"
+    elif [ -n "$(git status --porcelain)" ]; then
+      info "工作区有未提交改动，改写历史需要干净的工作区，本次跳过"
+      info "先 git commit 或 git stash，再重跑"
+    elif [ "$(git rev-list --count --merges HEAD)" != "0" ]; then
+      info "历史中存在合并提交，自动改写可能不安全，本次跳过"
+      info "手动处理：git rebase --root --exec 'git commit --amend --no-edit --reset-author'"
+    else
+      BEFORE_HEAD="$(git rev-parse HEAD)"
+      # 逐个提交重置作者：只改 HEAD 会让早期提交仍带着占位身份
+      if git rebase --root --quiet --exec 'git commit --amend --no-edit --reset-author' >/dev/null 2>&1; then
+        AFTER_HEAD="$(git rev-parse HEAD)"
+        ok "已把全部 $PLACEHOLDER_COUNT 个占位提交改写成 $(git log -1 --format='%an <%ae>')"
+        info "HEAD ${BEFORE_HEAD:0:7} → ${AFTER_HEAD:0:7}（历史已重写；首次推送前无影响）"
+      else
+        git rebase --abort >/dev/null 2>&1 || true
+        info "自动改写失败，请手动执行："
+        info "  git rebase --root --exec 'git commit --amend --no-edit --reset-author'"
+      fi
+    fi
   fi
 fi
 
