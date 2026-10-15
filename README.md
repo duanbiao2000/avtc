@@ -16,7 +16,7 @@
 npm install
 npm run build          # 产出 dist/
 npm run verify         # typecheck + lint + 覆盖率 + 构建 + 产物体检
-npm run zip            # 打包成 avtc-1.0.0.zip（内容与 dist/ 一致）
+npm run zip            # 打包成 avtc-<version>.zip（内容与 dist/ 一致）
 ```
 
 | 命令 | 作用 |
