@@ -1,0 +1,120 @@
+{
+  "extName": {
+    "message": "AVTC — GitHub repo tool launcher",
+    "description": "Extension name shown in the toolbar and the store listing"
+  },
+  "extDescription": {
+    "message": "Detects the current GitHub repo and opens 8 third-party tools in a new tab: diagrams, guides, AI prompts, reading and running.",
+    "description": "Extension description"
+  },
+  "groupUnderstand": {
+    "message": "Understand",
+    "description": "Action category"
+  },
+  "groupAi": {
+    "message": "AI workflow"
+  },
+  "groupCode": {
+    "message": "Read & edit"
+  },
+  "groupRun": {
+    "message": "Run"
+  },
+  "actionGitdiagram": {
+    "message": "View architecture"
+  },
+  "actionDeepwiki": {
+    "message": "Read the guide"
+  },
+  "actionZread": {
+    "message": "Explain with Zread"
+  },
+  "actionGitreverse": {
+    "message": "Turn into an AI prompt"
+  },
+  "actionGitingest": {
+    "message": "Digest for AI"
+  },
+  "actionGithub1s": {
+    "message": "Read source online"
+  },
+  "actionGithubdev": {
+    "message": "Edit online"
+  },
+  "actionStackblitz": {
+    "message": "Try running it"
+  },
+  "stateNoRepo": {
+    "message": "Open a GitHub repository first"
+  },
+  "stateAllHidden": {
+    "message": "All actions are hidden"
+  },
+  "openOptions": {
+    "message": "Open settings"
+  },
+  "optionsTitle": {
+    "message": "AVTC settings"
+  },
+  "footerOpenInNewTab": {
+    "message": "Opens in a new tab"
+  },
+  "toastOpened": {
+    "message": "Opened: $1",
+    "description": "$1 = tool name"
+  },
+  "errInvalidTarget": {
+    "message": "$1 address is invalid — nothing was opened",
+    "description": "$1 = tool name"
+  },
+  "errOpenFailed": {
+    "message": "The browser refused this address — nothing was opened"
+  },
+  "optionsListTitle": {
+    "message": "Actions"
+  },
+  "optionsGroupsHint": {
+    "message": "Uncheck to hide an action; use ↑ ↓ to reorder it inside its category. Changes save instantly and sync to your other devices via your Chrome account."
+  },
+  "optionsMoveUp": {
+    "message": "Move $1 up",
+    "description": "$1 = tool name"
+  },
+  "optionsMoveDown": {
+    "message": "Move $1 down",
+    "description": "$1 = tool name"
+  },
+  "optionsReset": {
+    "message": "Restore defaults"
+  },
+  "optionsSaved": {
+    "message": "Saved"
+  },
+  "optionsSaveFailed": {
+    "message": "Could not save — please try again"
+  },
+  "optionsPrivacyTitle": {
+    "message": "Privacy"
+  },
+  "optionsPrivacyBody": {
+    "message": "AVTC requests only two permissions, storage and activeTab. It makes no network requests of its own, contains no telemetry and no remote code, and never reads repository contents. The repository address lives in the address bar; it is sent to a third-party site only after you click one of its actions, as part of the browser navigation."
+  },
+  "optionsSiteAvailabilityNote": {
+    "message": "AVTC only builds addresses and navigates; it does not check whether a target site is reachable. A retired site, a 404 page, a sign-in requirement or a private repo you cannot access is not an \"invalid address\". In those cases, right-click the action row and copy the link to investigate in your browser."
+  },
+  "optionsPrivateRepoTitle": {
+    "message": "About private repositories"
+  },
+  "optionsPrivateRepoNote": {
+    "message": "AVTC cannot tell whether a repository is public and never blocks an action — every click opens the target. Support for private repositories differs per tool:"
+  },
+  "privateRepoNo": {
+    "message": "no — public repositories only; private ones usually fail to open"
+  },
+  "privateRepoSession": {
+    "message": "session — relies on your signed-in state on that site; private repos may require connecting your GitHub account there first"
+  },
+  "privateRepoToken": {
+    "message": "token — supports private repositories, provided you paste a GitHub Personal Access Token on that site"
+  }
+}

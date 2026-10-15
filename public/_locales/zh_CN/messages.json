@@ -1,0 +1,120 @@
+{
+  "extName": {
+    "message": "AVTC — GitHub 仓库工具跳转",
+    "description": "扩展名称，显示在 Chrome 工具栏与商店"
+  },
+  "extDescription": {
+    "message": "识别当前 GitHub 仓库，一键在新标签页打开 8 个第三方工具：架构图、项目讲解、AI 提示词、在线阅读与运行。",
+    "description": "扩展描述"
+  },
+  "groupUnderstand": {
+    "message": "理解",
+    "description": "动作分类"
+  },
+  "groupAi": {
+    "message": "AI 协作"
+  },
+  "groupCode": {
+    "message": "读写代码"
+  },
+  "groupRun": {
+    "message": "运行"
+  },
+  "actionGitdiagram": {
+    "message": "看架构图"
+  },
+  "actionDeepwiki": {
+    "message": "读项目讲解"
+  },
+  "actionZread": {
+    "message": "用 Zread 解读"
+  },
+  "actionGitreverse": {
+    "message": "拆成 AI 提示词"
+  },
+  "actionGitingest": {
+    "message": "整理给 AI"
+  },
+  "actionGithub1s": {
+    "message": "在线读源码"
+  },
+  "actionGithubdev": {
+    "message": "在线改代码"
+  },
+  "actionStackblitz": {
+    "message": "尝试在线运行"
+  },
+  "stateNoRepo": {
+    "message": "请打开一个 GitHub 仓库"
+  },
+  "stateAllHidden": {
+    "message": "所有动作已隐藏"
+  },
+  "openOptions": {
+    "message": "打开设置"
+  },
+  "optionsTitle": {
+    "message": "AVTC 设置"
+  },
+  "footerOpenInNewTab": {
+    "message": "在新标签页打开"
+  },
+  "toastOpened": {
+    "message": "已打开：$1",
+    "description": "$1 = 工具名"
+  },
+  "errInvalidTarget": {
+    "message": "$1 的地址无效，已取消打开",
+    "description": "$1 = 工具名"
+  },
+  "errOpenFailed": {
+    "message": "浏览器拒绝了该地址，已取消打开"
+  },
+  "optionsListTitle": {
+    "message": "动作列表"
+  },
+  "optionsGroupsHint": {
+    "message": "取消勾选可隐藏某个动作，↑ ↓ 可在同一分类内调整顺序。改动即时保存，并随 Chrome 账号同步到其他设备。"
+  },
+  "optionsMoveUp": {
+    "message": "上移 $1",
+    "description": "$1 = 工具名"
+  },
+  "optionsMoveDown": {
+    "message": "下移 $1",
+    "description": "$1 = 工具名"
+  },
+  "optionsReset": {
+    "message": "恢复默认"
+  },
+  "optionsSaved": {
+    "message": "已保存"
+  },
+  "optionsSaveFailed": {
+    "message": "保存失败，请稍后重试"
+  },
+  "optionsPrivacyTitle": {
+    "message": "隐私说明"
+  },
+  "optionsPrivacyBody": {
+    "message": "扩展只申请 storage 与 activeTab 两个权限，自身不发起任何网络请求，不含遥测与远程代码，也不读取仓库内容。仓库地址保存在当前页面地址栏里，只有在您点击某个动作后，才会随浏览器跳转一并发送给该动作对应的第三方站点。"
+  },
+  "optionsSiteAvailabilityNote": {
+    "message": "扩展只负责生成地址并跳转，不检测目标站点是否可用：站点下线、页面 404、需要登录或私有仓库无权限，都不属于“地址无效”。遇到这类情况，可在动作行上右键选择“复制链接地址”，自行在浏览器中排查。"
+  },
+  "optionsPrivateRepoTitle": {
+    "message": "关于私有仓库"
+  },
+  "optionsPrivateRepoNote": {
+    "message": "扩展无法判断仓库是否公开，也不会拦截任何动作；点击后一律直接打开。各工具对私有仓库的支持情况如下："
+  },
+  "privateRepoNo": {
+    "message": "no — 仅支持公开仓库，私有仓库通常打不开"
+  },
+  "privateRepoSession": {
+    "message": "session — 依赖您在该站点的登录状态，私有仓库可能需要先在该站点连接 GitHub 账号"
+  },
+  "privateRepoToken": {
+    "message": "token — 支持私有仓库，需要您在该站点内自行提供 GitHub Personal Access Token"
+  }
+}

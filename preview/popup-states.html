@@ -1,0 +1,563 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>AVTC popup 视觉校验台</title>
+    <style>
+      /* ==== 以下样式与 src/popup/popup.css 完全一致（值取自同一套 token） ==== */
+      .popup-scope {
+        --c-bg: #ffffff;
+        --c-line: #e8e8e8;
+        --c-text: #111111;
+        --c-muted: #6b6b6b;
+        --c-accent: #002fa7;
+        --c-hover: #f2f5ff;
+        --row-height: 44px;
+        --radius: 6px;
+        --font-sans:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+          'Microsoft YaHei', sans-serif;
+        --font-serif: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+
+        width: 340px;
+        background: var(--c-bg);
+        color: var(--c-text);
+        font: 400 13px/1.45 var(--font-sans);
+        border: 1px solid #d0d0d0;
+        border-radius: 10px;
+        overflow: hidden;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .popup-scope * {
+        box-sizing: border-box;
+      }
+
+      .popup {
+        display: flex;
+        flex-direction: column;
+        max-height: 600px;
+        overflow: hidden;
+      }
+
+      .header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 8px;
+        height: 48px;
+        padding: 0 10px 0 12px;
+        border-bottom: 1px solid var(--c-line);
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        min-width: 0;
+      }
+
+      .brand__logo {
+        flex: 0 0 auto;
+        width: 28px;
+        height: 28px;
+        border-radius: 4px;
+        background: var(--c-accent);
+        color: #ffffff;
+        font: 600 12px/28px var(--font-sans);
+        letter-spacing: 0.5px;
+        text-align: center;
+      }
+
+      .brand__text {
+        display: flex;
+        flex-direction: column;
+        min-width: 0;
+      }
+
+      .brand__title {
+        font-family: var(--font-serif);
+        font-size: 15px;
+        font-weight: 600;
+        letter-spacing: 0.6px;
+      }
+
+      .brand__subtitle {
+        overflow: hidden;
+        color: var(--c-muted);
+        font-size: 10px;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .icon-button {
+        flex: 0 0 auto;
+        width: 24px;
+        height: 24px;
+        padding: 0;
+        border: 1px solid transparent;
+        border-radius: 4px;
+        background: transparent;
+        color: var(--c-muted);
+        font-size: 13px;
+        line-height: 1;
+        cursor: pointer;
+      }
+
+      .project {
+        display: flex;
+        align-items: center;
+        height: 32px;
+        padding: 0 12px;
+        border-bottom: 1px solid var(--c-line);
+      }
+
+      .project__name {
+        overflow: hidden;
+        color: var(--c-accent);
+        font-size: 13px;
+        font-weight: 600;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .project__name.is-empty {
+        color: var(--c-muted);
+        font-weight: 400;
+      }
+
+      .actions {
+        flex: 1 1 auto;
+        padding: 6px 8px;
+        overflow-y: auto;
+      }
+
+      .group__title {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        height: 22px;
+        margin: 0 4px;
+        color: var(--c-muted);
+        font-size: 11px;
+        letter-spacing: 0.6px;
+      }
+
+      .group__tick {
+        width: 2px;
+        height: 12px;
+        border-radius: 1px;
+        background: var(--c-accent);
+      }
+
+      .row {
+        display: flex;
+        align-items: center;
+        height: var(--row-height);
+        padding: 0 8px;
+        border-radius: var(--radius);
+        color: inherit;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .row__label {
+        flex: 1 1 auto;
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .row__tool {
+        flex: 0 0 auto;
+        margin-left: 8px;
+        color: var(--c-muted);
+        font-size: 12px;
+      }
+
+      .row__arrow {
+        flex: 0 0 auto;
+        margin-left: 6px;
+        color: var(--c-muted);
+        font-size: 12px;
+      }
+
+      .row--disabled,
+      .row--invalid {
+        opacity: 0.5;
+        color: var(--c-muted);
+        cursor: default;
+        pointer-events: none;
+      }
+
+      .empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 10px;
+        padding: 28px 16px;
+        text-align: center;
+      }
+
+      .empty__text {
+        margin: 0;
+        color: var(--c-muted);
+        font-size: 12px;
+      }
+
+      .button {
+        height: 28px;
+        padding: 0 14px;
+        border: 1px solid var(--c-accent);
+        border-radius: var(--radius);
+        background: transparent;
+        color: var(--c-accent);
+        font: 400 12px var(--font-sans);
+        cursor: pointer;
+      }
+
+      .footer {
+        display: flex;
+        flex: 0 0 auto;
+        align-items: center;
+        gap: 6px;
+        min-height: 30px;
+        padding: 0 12px;
+        border-top: 1px solid var(--c-line);
+        color: var(--c-muted);
+        font-size: 11px;
+      }
+
+      .footer__tick {
+        flex: 0 0 auto;
+        width: 2px;
+        height: 12px;
+        border-radius: 1px;
+        background: transparent;
+      }
+
+      .footer__text {
+        overflow: hidden;
+        white-space: nowrap;
+        text-overflow: ellipsis;
+      }
+
+      .popup-scope .footer--alert .footer__tick {
+        background: var(--c-accent);
+      }
+
+      .popup-scope .footer--alert .footer__text {
+        color: var(--c-text);
+      }
+
+      /* ==== 仅用于本页的静态演示：把 :hover / :focus-visible 固定下来 ==== */
+      .popup-scope .row.demo-hover,
+      .popup-scope .row.demo-focus {
+        background: var(--c-hover);
+      }
+
+      .popup-scope .row.demo-hover .row__label,
+      .popup-scope .row.demo-hover .row__tool,
+      .popup-scope .row.demo-hover .row__arrow,
+      .popup-scope .row.demo-focus .row__label {
+        color: var(--c-accent);
+      }
+
+      .popup-scope .row.demo-focus {
+        outline: 2px solid var(--c-accent);
+        outline-offset: -2px;
+      }
+
+      .popup-scope .icon-button.demo-hover {
+        background: var(--c-hover);
+        color: var(--c-accent);
+      }
+
+      /* ==== 校验台外壳（不属于扩展） ==== */
+      body {
+        margin: 0;
+        padding: 28px 24px 60px;
+        background: #f5f5f5;
+        color: #111;
+        font: 400 13px/1.6 -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', sans-serif;
+      }
+      h1 {
+        margin: 0 0 4px;
+        font-size: 18px;
+      }
+      .lede {
+        margin: 0 0 24px;
+        color: #6b6b6b;
+        max-width: 780px;
+      }
+      .grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 28px;
+        align-items: flex-start;
+      }
+      figure {
+        margin: 0;
+      }
+      figcaption {
+        margin: 0 0 8px;
+        font-size: 12px;
+        color: #6b6b6b;
+      }
+      figcaption b {
+        color: #002fa7;
+        font-weight: 600;
+      }
+      .token-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin: 0 0 28px;
+      }
+      .token {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 10px;
+        background: #fff;
+        border: 1px solid #e8e8e8;
+        border-radius: 6px;
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 11px;
+      }
+      .swatch {
+        width: 14px;
+        height: 14px;
+        border-radius: 3px;
+        border: 1px solid rgba(0, 0, 0, 0.08);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>AVTC popup 视觉校验台</h1>
+    <p class="lede">
+      样式值与 <code>src/popup/popup.css</code> 逐行一致，页面内联、不加载任何外部资源。用来在不安装扩展的情况下对照开发文档第 2
+      节逐项核对：配色、44px 行高、克莱因蓝只做点缀、悬停与焦点环、以及 6 种状态。
+    </p>
+
+    <div class="token-row">
+      <span class="token"><i class="swatch" style="background: #ffffff"></i>背景 #FFFFFF</span>
+      <span class="token"><i class="swatch" style="background: #e8e8e8"></i>分隔线 #E8E8E8</span>
+      <span class="token"><i class="swatch" style="background: #111111"></i>主文字 #111111</span>
+      <span class="token"><i class="swatch" style="background: #6b6b6b"></i>次要文字 #6B6B6B</span>
+      <span class="token"><i class="swatch" style="background: #002fa7"></i>克莱因蓝 #002FA7</span>
+      <span class="token"><i class="swatch" style="background: #f2f5ff"></i>悬停底色 #F2F5FF</span>
+    </div>
+
+    <div class="grid">
+      <!-- A1 正常状态（中文） -->
+      <figure>
+        <figcaption><b>A</b> 正常状态（中文，默认）— 4 分类 / 8 动作</figcaption>
+        <div class="popup-scope">
+          <div class="popup">
+            <header class="header">
+              <div class="brand">
+                <span class="brand__logo">AV</span>
+                <span class="brand__text">
+                  <span class="brand__title">AVTC</span>
+                  <span class="brand__subtitle">Auckland Voyage Training Camp</span>
+                </span>
+              </div>
+              <button class="icon-button" title="AVTC 设置">⚙</button>
+            </header>
+            <div class="project"><span class="project__name">browser-act/skills</span></div>
+            <main class="actions">
+              <div class="group__title"><span class="group__tick"></span><span>理解</span></div>
+              <a class="row"><span class="row__label">看架构图</span><span class="row__tool">GitDiagram</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">读项目讲解</span><span class="row__tool">DeepWiki</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">用 Zread 解读</span><span class="row__tool">Zread</span><span class="row__arrow">↗</span></a>
+              <div class="group__title"><span class="group__tick"></span><span>AI 协作</span></div>
+              <a class="row"><span class="row__label">拆成 AI 提示词</span><span class="row__tool">GitReverse</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">整理给 AI</span><span class="row__tool">Gitingest</span><span class="row__arrow">↗</span></a>
+              <div class="group__title"><span class="group__tick"></span><span>读写代码</span></div>
+              <a class="row"><span class="row__label">在线读源码</span><span class="row__tool">GitHub1s</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">在线改代码</span><span class="row__tool">GitHub.dev</span><span class="row__arrow">↗</span></a>
+              <div class="group__title"><span class="group__tick"></span><span>运行</span></div>
+              <a class="row"><span class="row__label">尝试在线运行</span><span class="row__tool">StackBlitz</span><span class="row__arrow">↗</span></a>
+            </main>
+            <footer class="footer">
+              <span class="footer__tick"></span><span class="footer__text">在新标签页打开</span>
+            </footer>
+          </div>
+        </div>
+      </figure>
+
+      <!-- A2 正常状态（英文） -->
+      <figure>
+        <figcaption><b>A′</b> 正常状态（English，非中文浏览器）</figcaption>
+        <div class="popup-scope">
+          <div class="popup">
+            <header class="header">
+              <div class="brand">
+                <span class="brand__logo">AV</span>
+                <span class="brand__text">
+                  <span class="brand__title">AVTC</span>
+                  <span class="brand__subtitle">Auckland Voyage Training Camp</span>
+                </span>
+              </div>
+              <button class="icon-button" title="AVTC settings">⚙</button>
+            </header>
+            <div class="project"><span class="project__name">WebKit/WebKit</span></div>
+            <main class="actions">
+              <div class="group__title"><span class="group__tick"></span><span>Understand</span></div>
+              <a class="row"><span class="row__label">View architecture</span><span class="row__tool">GitDiagram</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">Read the guide</span><span class="row__tool">DeepWiki</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">Explain with Zread</span><span class="row__tool">Zread</span><span class="row__arrow">↗</span></a>
+              <div class="group__title"><span class="group__tick"></span><span>AI workflow</span></div>
+              <a class="row"><span class="row__label">Turn into an AI prompt</span><span class="row__tool">GitReverse</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">Digest for AI</span><span class="row__tool">Gitingest</span><span class="row__arrow">↗</span></a>
+              <div class="group__title"><span class="group__tick"></span><span>Read &amp; edit</span></div>
+              <a class="row"><span class="row__label">Read source online</span><span class="row__tool">GitHub1s</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">Edit online</span><span class="row__tool">GitHub.dev</span><span class="row__arrow">↗</span></a>
+              <div class="group__title"><span class="group__tick"></span><span>Run</span></div>
+              <a class="row"><span class="row__label">Try running it</span><span class="row__tool">StackBlitz</span><span class="row__arrow">↗</span></a>
+            </main>
+            <footer class="footer">
+              <span class="footer__tick"></span><span class="footer__text">Opens in a new tab</span>
+            </footer>
+          </div>
+        </div>
+      </figure>
+
+      <!-- B 非仓库页 -->
+      <figure>
+        <figcaption><b>B</b> 非仓库页 — 列表置灰、不可点</figcaption>
+        <div class="popup-scope">
+          <div class="popup">
+            <header class="header">
+              <div class="brand">
+                <span class="brand__logo">AV</span>
+                <span class="brand__text">
+                  <span class="brand__title">AVTC</span>
+                  <span class="brand__subtitle">Auckland Voyage Training Camp</span>
+                </span>
+              </div>
+              <button class="icon-button" title="AVTC 设置">⚙</button>
+            </header>
+            <div class="project"><span class="project__name is-empty">—</span></div>
+            <main class="actions">
+              <div class="group__title"><span class="group__tick"></span><span>理解</span></div>
+              <a class="row row--disabled"><span class="row__label">看架构图</span><span class="row__tool">GitDiagram</span><span class="row__arrow">↗</span></a>
+              <a class="row row--disabled"><span class="row__label">读项目讲解</span><span class="row__tool">DeepWiki</span><span class="row__arrow">↗</span></a>
+              <a class="row row--disabled"><span class="row__label">用 Zread 解读</span><span class="row__tool">Zread</span><span class="row__arrow">↗</span></a>
+              <div class="group__title"><span class="group__tick"></span><span>AI 协作</span></div>
+              <a class="row row--disabled"><span class="row__label">拆成 AI 提示词</span><span class="row__tool">GitReverse</span><span class="row__arrow">↗</span></a>
+              <a class="row row--disabled"><span class="row__label">整理给 AI</span><span class="row__tool">Gitingest</span><span class="row__arrow">↗</span></a>
+              <div class="group__title"><span class="group__tick"></span><span>读写代码</span></div>
+              <a class="row row--disabled"><span class="row__label">在线读源码</span><span class="row__tool">GitHub1s</span><span class="row__arrow">↗</span></a>
+              <a class="row row--disabled"><span class="row__label">在线改代码</span><span class="row__tool">GitHub.dev</span><span class="row__arrow">↗</span></a>
+              <div class="group__title"><span class="group__tick"></span><span>运行</span></div>
+              <a class="row row--disabled"><span class="row__label">尝试在线运行</span><span class="row__tool">StackBlitz</span><span class="row__arrow">↗</span></a>
+            </main>
+            <footer class="footer">
+              <span class="footer__tick"></span><span class="footer__text">请打开一个 GitHub 仓库</span>
+            </footer>
+          </div>
+        </div>
+      </figure>
+
+      <!-- E 错误提示 -->
+      <figure>
+        <figcaption><b>E</b> 地址无效 — 不跳转，底部一行文字提示</figcaption>
+        <div class="popup-scope">
+          <div class="popup">
+            <header class="header">
+              <div class="brand">
+                <span class="brand__logo">AV</span>
+                <span class="brand__text">
+                  <span class="brand__title">AVTC</span>
+                  <span class="brand__subtitle">Auckland Voyage Training Camp</span>
+                </span>
+              </div>
+              <button class="icon-button" title="AVTC 设置">⚙</button>
+            </header>
+            <div class="project"><span class="project__name">browser-act/skills</span></div>
+            <main class="actions">
+              <div class="group__title"><span class="group__tick"></span><span>理解</span></div>
+              <a class="row demo-hover"><span class="row__label">看架构图</span><span class="row__tool">GitDiagram</span><span class="row__arrow">↗</span></a>
+              <a class="row demo-focus"><span class="row__label">读项目讲解</span><span class="row__tool">DeepWiki</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">用 Zread 解读</span><span class="row__tool">Zread</span><span class="row__arrow">↗</span></a>
+              <div class="group__title"><span class="group__tick"></span><span>AI 协作</span></div>
+              <a class="row"><span class="row__label">拆成 AI 提示词</span><span class="row__tool">GitReverse</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">整理给 AI</span><span class="row__tool">Gitingest</span><span class="row__arrow">↗</span></a>
+              <div class="group__title"><span class="group__tick"></span><span>读写代码</span></div>
+              <a class="row"><span class="row__label">在线读源码</span><span class="row__tool">GitHub1s</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">在线改代码</span><span class="row__tool">GitHub.dev</span><span class="row__arrow">↗</span></a>
+              <div class="group__title"><span class="group__tick"></span><span>运行</span></div>
+              <a class="row"><span class="row__label">尝试在线运行</span><span class="row__tool">StackBlitz</span><span class="row__arrow">↗</span></a>
+            </main>
+            <footer class="footer footer--alert" role="alert">
+              <span class="footer__tick"></span><span class="footer__text">GitDiagram 的地址无效，已取消打开</span>
+            </footer>
+          </div>
+        </div>
+        <p style="max-width: 340px; margin: 8px 0 0; font-size: 11px; color: #6b6b6b">
+          第二行同时展示了键盘焦点环（<code>:focus-visible</code>），第一行是悬停态（<code>#F2F5FF</code> 底 + 克莱因蓝文字）。
+        </p>
+      </figure>
+
+      <!-- C 全隐藏 -->
+      <figure>
+        <figcaption><b>C</b> 所有动作被隐藏 — 可一键进入选项页</figcaption>
+        <div class="popup-scope">
+          <div class="popup">
+            <header class="header">
+              <div class="brand">
+                <span class="brand__logo">AV</span>
+                <span class="brand__text">
+                  <span class="brand__title">AVTC</span>
+                  <span class="brand__subtitle">Auckland Voyage Training Camp</span>
+                </span>
+              </div>
+              <button class="icon-button" title="AVTC 设置">⚙</button>
+            </header>
+            <div class="project"><span class="project__name">browser-act/skills</span></div>
+            <main class="actions">
+              <div class="empty">
+                <p class="empty__text">所有动作已隐藏</p>
+                <button class="button">打开设置</button>
+              </div>
+            </main>
+            <footer class="footer">
+              <span class="footer__tick"></span><span class="footer__text">在新标签页打开</span>
+            </footer>
+          </div>
+        </div>
+      </figure>
+
+      <!-- F 已打开提示 -->
+      <figure>
+        <figcaption><b>F</b> Ctrl/Cmd+单击后台打开 — 弹窗保留并提示</figcaption>
+        <div class="popup-scope">
+          <div class="popup">
+            <header class="header">
+              <div class="brand">
+                <span class="brand__logo">AV</span>
+                <span class="brand__text">
+                  <span class="brand__title">AVTC</span>
+                  <span class="brand__subtitle">Auckland Voyage Training Camp</span>
+                </span>
+              </div>
+              <button class="icon-button" title="AVTC 设置">⚙</button>
+            </header>
+            <div class="project"><span class="project__name">browser-act/skills</span></div>
+            <main class="actions">
+              <div class="group__title"><span class="group__tick"></span><span>理解</span></div>
+              <a class="row"><span class="row__label">看架构图</span><span class="row__tool">GitDiagram</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">读项目讲解</span><span class="row__tool">DeepWiki</span><span class="row__arrow">↗</span></a>
+              <a class="row"><span class="row__label">用 Zread 解读</span><span class="row__tool">Zread</span><span class="row__arrow">↗</span></a>
+            </main>
+            <footer class="footer">
+              <span class="footer__tick"></span><span class="footer__text">已打开：GitDiagram</span>
+            </footer>
+          </div>
+        </div>
+      </figure>
+    </div>
+  </body>
+</html>

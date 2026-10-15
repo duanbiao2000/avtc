@@ -1,0 +1,268 @@
+/* AVTC options page — same palette as the popup. */
+:root {
+  --c-bg: #ffffff;
+  --c-line: #e8e8e8;
+  --c-text: #111111;
+  --c-muted: #6b6b6b;
+  --c-accent: #002fa7;
+  --c-hover: #f2f5ff;
+  --radius: 6px;
+  --font-sans:
+    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+    'Microsoft YaHei', sans-serif;
+  --font-serif: 'Noto Serif SC', 'Songti SC', 'SimSun', serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--c-bg);
+  color: var(--c-text);
+  font: 400 14px/1.6 var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+}
+
+.page {
+  max-width: 680px;
+  margin: 0 auto;
+  padding: 28px 24px 48px;
+}
+
+.page__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding-bottom: 18px;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  border-radius: 4px;
+  background: var(--c-accent);
+  color: #ffffff;
+  font: 600 13px/32px var(--font-sans);
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.page__titles {
+  display: flex;
+  flex-direction: column;
+}
+
+.page__title {
+  font-family: var(--font-serif);
+  font-size: 18px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+}
+
+.page__subtitle {
+  color: var(--c-muted);
+  font-size: 12px;
+}
+
+.card {
+  padding: 20px 0;
+  border-bottom: 1px solid var(--c-line);
+}
+
+.card:last-child {
+  border-bottom: 0;
+}
+
+.card__title {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 0 0 6px;
+  font-size: 15px;
+  font-weight: 600;
+}
+
+.card__title::before {
+  content: '';
+  display: inline-block;
+  width: 2px;
+  height: 14px;
+  border-radius: 1px;
+  background: var(--c-accent);
+}
+
+.hint,
+.body {
+  margin: 0 0 12px;
+  color: var(--c-muted);
+  font-size: 13px;
+}
+
+/* ---------- action list ---------- */
+.groups {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.group__name {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 4px;
+  color: var(--c-muted);
+  font-size: 12px;
+  letter-spacing: 0.6px;
+}
+
+.group__tick {
+  width: 2px;
+  height: 12px;
+  border-radius: 1px;
+  background: var(--c-accent);
+}
+
+.group__items {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 44px;
+  padding: 0 10px;
+  border-radius: var(--radius);
+}
+
+.item:hover {
+  background: var(--c-hover);
+}
+
+.item__check {
+  flex: 0 0 auto;
+  width: 16px;
+  height: 16px;
+  accent-color: var(--c-accent);
+}
+
+.item__text {
+  display: flex;
+  flex: 1 1 auto;
+  align-items: baseline;
+  gap: 8px;
+  min-width: 0;
+  cursor: pointer;
+}
+
+.item__label {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.item__tool {
+  color: var(--c-muted);
+  font-size: 12px;
+}
+
+.item--hidden .item__label,
+.item--hidden .item__tool {
+  color: var(--c-muted);
+  text-decoration: line-through;
+}
+
+.item__move {
+  display: flex;
+  flex: 0 0 auto;
+  gap: 4px;
+}
+
+.item__button {
+  width: 26px;
+  height: 26px;
+  padding: 0;
+  border: 1px solid var(--c-line);
+  border-radius: 4px;
+  background: transparent;
+  color: var(--c-text);
+  font-size: 12px;
+  line-height: 1;
+  cursor: pointer;
+}
+
+.item__button:hover:not(:disabled) {
+  border-color: var(--c-accent);
+  color: var(--c-accent);
+}
+
+.item__button:focus-visible,
+.button:focus-visible {
+  outline: 2px solid var(--c-accent);
+  outline-offset: 1px;
+}
+
+.item__button:disabled {
+  color: var(--c-line);
+  cursor: default;
+}
+
+/* ---------- buttons / status ---------- */
+.actions-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 16px;
+}
+
+.button {
+  height: 32px;
+  padding: 0 16px;
+  border: 1px solid var(--c-accent);
+  border-radius: var(--radius);
+  background: transparent;
+  color: var(--c-accent);
+  font: 400 13px var(--font-sans);
+  cursor: pointer;
+}
+
+.button:hover {
+  background: var(--c-hover);
+}
+
+.status {
+  color: var(--c-muted);
+  font-size: 12px;
+}
+
+.status--alert {
+  color: var(--c-text);
+}
+
+/* ---------- legend ---------- */
+.legend {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+.legend li {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  color: var(--c-muted);
+  font-size: 13px;
+}
+
+.legend__key {
+  flex: 0 0 auto;
+  min-width: 62px;
+  color: var(--c-accent);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+}

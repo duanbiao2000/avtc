@@ -1,0 +1,51 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+jobs:
+  verify:
+    name: typecheck · lint · test · build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: npm
+
+      - name: Install
+        run: npm ci
+        env:
+          # 商店素材脚本用到的 puppeteer 在 CI 里用不上，跳过 ~150MB 的 Chrome 下载
+          PUPPETEER_SKIP_DOWNLOAD: 'true'
+
+      - name: Verify (typecheck + lint + coverage + build + dist checks)
+        run: npm run verify
+
+      - name: Build artifact (extension zip)
+        run: npm run zip
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: avtc-extension
+          path: avtc-*.zip
+          if-no-files-found: error
+
+  privacy:
+    name: privacy policy placeholders
+    runs-on: ubuntu-latest
+    # Non-blocking: the placeholders are expected to remain until the publisher
+    # fills in a contact email and an effective date.
+    continue-on-error: true
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Check docs/privacy.html
+        run: node scripts/check-privacy.mjs

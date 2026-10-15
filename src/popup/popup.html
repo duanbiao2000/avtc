@@ -1,0 +1,43 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title>AVTC</title>
+    <link rel="stylesheet" href="./popup.css" />
+  </head>
+  <body>
+    <div class="popup">
+      <header class="header">
+        <div class="brand">
+          <span class="brand__logo" aria-hidden="true">AV</span>
+          <span class="brand__text">
+            <span class="brand__title">AVTC</span>
+            <span class="brand__subtitle">Auckland Voyage Training Camp</span>
+          </span>
+        </div>
+        <button
+          id="open-options"
+          class="icon-button"
+          type="button"
+          data-i18n-title="optionsTitle"
+          data-i18n-aria="optionsTitle"
+        >
+          ⚙
+        </button>
+      </header>
+
+      <div class="project">
+        <span id="current-project" class="project__name"></span>
+      </div>
+
+      <main id="actions" class="actions"></main>
+
+      <footer id="footer" class="footer" role="status" aria-live="polite">
+        <span class="footer__tick" aria-hidden="true"></span>
+        <span id="footer-text" class="footer__text"></span>
+      </footer>
+    </div>
+
+    <script type="module" src="./popup.ts"></script>
+  </body>
+</html>

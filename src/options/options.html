@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <title data-i18n="optionsTitle">AVTC</title>
+    <link rel="stylesheet" href="./options.css" />
+  </head>
+  <body>
+    <div class="page">
+      <header class="page__header">
+        <span class="logo" aria-hidden="true">AV</span>
+        <span class="page__titles">
+          <span class="page__title">AVTC</span>
+          <span class="page__subtitle">Auckland Voyage Training Camp</span>
+        </span>
+      </header>
+
+      <section class="card">
+        <h2 class="card__title" data-i18n="optionsListTitle"></h2>
+        <p class="hint" data-i18n="optionsGroupsHint"></p>
+        <div id="groups" class="groups"></div>
+        <div class="actions-row">
+          <button id="reset" class="button" type="button" data-i18n="optionsReset"></button>
+          <span id="status" class="status" role="status" aria-live="polite"></span>
+        </div>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title" data-i18n="optionsPrivacyTitle"></h2>
+        <p class="body" data-i18n="optionsPrivacyBody"></p>
+        <p class="body" data-i18n="optionsSiteAvailabilityNote"></p>
+      </section>
+
+      <section class="card">
+        <h2 class="card__title" data-i18n="optionsPrivateRepoTitle"></h2>
+        <p class="body" data-i18n="optionsPrivateRepoNote"></p>
+        <ul class="legend">
+          <li><span class="legend__key">no</span><span data-i18n="privateRepoNo"></span></li>
+          <li><span class="legend__key">session</span><span data-i18n="privateRepoSession"></span></li>
+          <li><span class="legend__key">token</span><span data-i18n="privateRepoToken"></span></li>
+        </ul>
+      </section>
+    </div>
+
+    <script type="module" src="./options.ts"></script>
+  </body>
+</html>

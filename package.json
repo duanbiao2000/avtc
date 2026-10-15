@@ -1,0 +1,39 @@
+{
+  "name": "avtc",
+  "version": "1.0.0",
+  "private": true,
+  "description": "AVTC — Auckland Voyage Training Camp. GitHub repo -> 8 third-party tools, one click.",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "build": "vite build",
+    "dev": "vite build --watch",
+    "icons": "node scripts/make-icons.mjs",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "coverage": "vitest run --coverage",
+    "verify": "npm run typecheck && npm run lint && npm run coverage && npm run build && npm run check:dist",
+    "zip": "rm -f avtc-1.0.0.zip && cd dist && zip -rq ../avtc-1.0.0.zip . -x \".*\"",
+    "check:dist": "node scripts/check-dist.mjs",
+    "assets:store": "node scripts/make-store-assets.mjs",
+    "check:privacy": "node scripts/check-privacy.mjs"
+  },
+  "devDependencies": {
+    "@types/chrome": "^0.0.287",
+    "@types/node": "^22.10.2",
+    "@vitest/coverage-v8": "^2.1.8",
+    "eslint": "^9.17.0",
+    "eslint-config-prettier": "^9.1.0",
+    "prettier": "^3.4.2",
+    "puppeteer": "^24.43.1",
+    "typescript": "^5.7.2",
+    "typescript-eslint": "^8.18.1",
+    "vite": "^5.4.11",
+    "vitest": "^2.1.8"
+  }
+}

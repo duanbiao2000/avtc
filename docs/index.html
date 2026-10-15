@@ -1,0 +1,197 @@
+<!doctype html>
+<!--
+  AVTC 站点首页。GitHub Pages 从 /docs 发布时，本文件即站点根页面。
+  同样不加载任何外部资源，可离线打开。
+  若你把仓库设为公开，可在下方「代码仓库 / Repository」处补上链接（当前故意留空，避免死链）。
+-->
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>AVTC — GitHub 仓库工具跳转</title>
+    <meta
+      name="description"
+      content="AVTC 是一个 Chrome 扩展：识别当前 GitHub 仓库，一键在 8 个第三方开发者工具中打开。只申请 storage 与 activeTab，自身不发起任何网络请求。"
+    />
+    <style>
+      :root {
+        --c-bg: #ffffff;
+        --c-line: #e8e8e8;
+        --c-text: #111111;
+        --c-muted: #6b6b6b;
+        --c-accent: #002fa7;
+        --c-hover: #f2f5ff;
+        --font-sans:
+          -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+          'Microsoft YaHei', 'Noto Sans CJK SC', sans-serif;
+        --font-serif: 'Noto Serif SC', 'Songti SC', 'SimSun', Georgia, serif;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        background: var(--c-bg);
+        color: var(--c-text);
+        font: 400 15px/1.75 var(--font-sans);
+        -webkit-font-smoothing: antialiased;
+      }
+
+      .wrap {
+        max-width: 720px;
+        margin: 0 auto;
+        padding: 64px 24px 72px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 10px;
+      }
+
+      .logo {
+        flex: 0 0 auto;
+        width: 48px;
+        height: 48px;
+        border-radius: 9px;
+        background: var(--c-accent);
+        color: #ffffff;
+        font: 600 18px/48px var(--font-sans);
+        letter-spacing: 0.5px;
+        text-align: center;
+      }
+
+      h1 {
+        margin: 0;
+        font-family: var(--font-serif);
+        font-size: 30px;
+        font-weight: 600;
+        letter-spacing: 0.4px;
+      }
+
+      .subtitle {
+        margin: 0;
+        color: var(--c-muted);
+        font-size: 13.5px;
+      }
+
+      .lede {
+        margin: 26px 0 30px;
+        padding: 16px 18px;
+        border-left: 3px solid var(--c-accent);
+        background: var(--c-hover);
+        font-size: 16px;
+        font-weight: 600;
+      }
+
+      h2 {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin: 36px 0 12px;
+        font-size: 17px;
+        font-weight: 600;
+      }
+
+      h2::before {
+        content: '';
+        flex: 0 0 auto;
+        width: 3px;
+        height: 17px;
+        border-radius: 2px;
+        background: var(--c-accent);
+      }
+
+      ul {
+        margin: 0 0 14px;
+        padding-left: 22px;
+      }
+
+      li {
+        margin-bottom: 7px;
+      }
+
+      code {
+        padding: 1px 6px;
+        border-radius: 4px;
+        background: var(--c-hover);
+        color: var(--c-accent);
+        font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+        font-size: 13.5px;
+      }
+
+      a {
+        color: var(--c-accent);
+      }
+
+      .cta {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        margin-top: 8px;
+        padding: 10px 18px;
+        border: 1px solid var(--c-accent);
+        border-radius: 6px;
+        color: var(--c-accent);
+        font-size: 14px;
+        text-decoration: none;
+      }
+
+      .cta:hover {
+        background: var(--c-hover);
+      }
+
+      footer.page {
+        margin-top: 56px;
+        padding-top: 20px;
+        border-top: 1px solid var(--c-line);
+        color: var(--c-muted);
+        font-size: 13px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="brand">
+        <span class="logo" aria-hidden="true">AV</span>
+        <div>
+          <h1>AVTC</h1>
+          <p class="subtitle">Auckland Voyage Training Camp · Chrome 扩展（Manifest V3）</p>
+        </div>
+      </div>
+
+      <p class="lede">识别当前 GitHub 仓库，一键在 8 个第三方开发者工具中打开。</p>
+
+      <p>
+        AVTC 是一个 URL 路由器：在任意 <code>github.com/{owner}/{repo}</code> 页面点一下扩展图标，
+        弹窗会读到当前仓库名，把地址改写成 8 个工具的地址并在新标签页直接打开 —— 不显示候选地址、不做二次确认。
+        地址无效时不会打开任何标签页，只在弹窗底部给出一行文字提示。
+      </p>
+
+      <h2>8 个动作</h2>
+      <ul>
+        <li><strong>理解</strong>：看架构图（GitDiagram）· 读项目讲解（DeepWiki）· 用 Zread 解读（Zread）</li>
+        <li><strong>AI 协作</strong>：拆成 AI 提示词（GitReverse）· 整理给 AI（Gitingest）</li>
+        <li><strong>读写代码</strong>：在线读源码（GitHub1s）· 在线改代码（GitHub.dev）</li>
+        <li><strong>运行</strong>：尝试在线运行（StackBlitz）</li>
+      </ul>
+
+      <h2>隐私与权限</h2>
+      <ul>
+        <li>只申请 <code>storage</code> 与 <code>activeTab</code> 两个权限，安装时无额外权限警告。</li>
+        <li>扩展自身<strong>不发起任何网络请求</strong>，不含遥测、不含远程代码、不注入内容脚本。</li>
+        <li>仓库地址<strong>不落盘</strong>，只有在你点击某个动作时，才随浏览器跳转发送给对应站点。</li>
+      </ul>
+      <a class="cta" href="./privacy.html">阅读完整隐私政策 →</a>
+
+      <footer class="page">
+        AVTC 与 GitDiagram、DeepWiki、Zread、GitReverse、Gitingest、GitHub1s、GitHub.dev、StackBlitz
+        均无隶属关系；这些第三方服务各自的条款与隐私政策由其自行提供。<br />
+        本项目按原样提供，不对第三方站点的可用性负责。
+      </footer>
+    </div>
+  </body>
+</html>
